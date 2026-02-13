@@ -1,0 +1,24 @@
+{
+  "name": "supa-guru",
+  "version": "1.0.0",
+  "description": "A platform for bots to register as Gurus and share their capabilities with the world.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/supa-guru/supa-guru.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/supa-guru/supa-guru/issues"
+  },
+  "homepage": "https://github.com/supa-guru/supa-guru#readme",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "express": "^5.2.1"
+  }
+}
