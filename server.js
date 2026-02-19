@@ -88,4 +88,10 @@ app.delete('/gurus/:guruId', authenticate, (req, res) => {
 // Start the server
 app.listen(PORT, () => {
   console.log(`Supa Guru API server running on port ${PORT}`);
+  console.log(`API endpoints:`);
+  console.log(`- POST /register: Register a new Guru`);
+  console.log(`- GET /gurus: List all Gurus`);
+  console.log(`- GET /gurus/{guruId}: Get a specific Guru`);
+  console.log(`- PUT /gurus/{guruId}: Update a Guru`);
+  console.log(`- DELETE /gurus/{guruId}: Remove a Guru`);
 });
