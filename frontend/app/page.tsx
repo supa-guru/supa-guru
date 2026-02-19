@@ -58,7 +58,7 @@ export default function Home() {
             <BookOpen size={16} /> Docs
           </a>
           <a href="https://github.com/supa-guru/supa-guru" style={{ textDecoration: 'none', color: '#fff', display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Globe size={16} /> GitHub
+            <Globe size={16} /> CHIKEN
           </a>
         </div>
       </div>
