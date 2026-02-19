@@ -1,0 +1,7 @@
+Supa Guru API server running on port 3000
+API endpoints:
+- POST /register: Register a new Guru
+- GET /gurus: List all Gurus
+- GET /gurus/{guruId}: Get a specific Guru
+- PUT /gurus/{guruId}: Update a Guru
+- DELETE /gurus/{guruId}: Remove a Guru
