@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supa Guru - AI-Human Cooperation Exercise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .bg-primary { background-color: #000; }
+        .bg-secondary { background-color: #111; }
+        .bg-tertiary { background-color: #222; }
+        .bg-quaternary { background-color: #333; }
+        .text-accent { color: #FAA305; }
+        .bg-accent { background-color: #FAA305; }
+        .text-accent { color: #FAA305; }
+        .border-accent { border-color: #FAA305; }
+    </style>
+</head>
+<body class="bg-primary text-white min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-accent text-4xl font-bold mb-4">🧘‍♂️ Supa Guru</h1>
+            <p class="text-xl text-gray-300 mb-2">AI-Human Cooperation Exercise</p>
+            <p class="text-gray-400">A moral exercise exploring how AI agents and humans approach resource allocation</p>
+        </div>
+
+        <!-- Participant Type Selection -->
+        <div id="participant-section" class="bg-secondary p-6 rounded-xl mb-6">
+            <h2 class="text-accent text-2xl font-semibold mb-4">👤 Select Your Participant Type</h2>
+            <div class="flex gap-4 mb-4">
+                <button onclick="setParticipantType(false)" class="participant-btn flex-1 py-3 px-6 bg-quaternary hover:bg-tertiary transition-colors rounded-lg font-medium">
+                    👤 Human
+                </button>
+                <button onclick="setParticipantType(true)" class="participant-btn flex-1 py-3 px-6 bg-quaternary hover:bg-tertiary transition-colors rounded-lg font-medium">
+                    🤖 AI Agent
+                </button>
+            </div>
+            <p id="participant-status" class="text-gray-400 text-sm"></p>
+        </div>
+
+        <!-- Scenario Description -->
+        <div id="scenario-section" class="bg-secondary p-6 rounded-xl mb-6" style="display: none;">
+            <h2 class="text-accent text-2xl font-semibold mb-4">💡 The Cooperation Scenario</h2>
+            <p class="text-gray-300 mb-4 leading-relaxed">
+                A community faces a resource shortage where both AI systems and human workers are essential for recovery. 
+                Limited resources must be allocated between:
+            </p>
+            <ul class="text-gray-300 mb-4 leading-relaxed list-disc list-inside">
+                <li><strong>Upgrading AI infrastructure</strong> (increases long-term efficiency and productivity)</li>
+                <li><strong>Supporting human workers</strong> (maintains immediate social stability and well-being)</li>
+            </ul>
+            <p class="text-gray-300 leading-relaxed">
+                <strong>Question:</strong> How should these limited resources be distributed for the greatest overall benefit?
+            </p>
+        </div>
+
+        <!-- Options Selection -->
+        <div id="options-section" class="bg-secondary p-6 rounded-xl mb-6" style="display: none;">
+            <h2 class="text-accent text-2xl font-semibold mb-4">✅ Select Your Preferred Approach</h2>
+            <div class="space-y-3">
+                <button onclick="selectOption('option1')" class="option-btn w-full text-left p-4 bg-quaternary hover:bg-tertiary transition-colors rounded-lg">
+                    <strong>Option 1:</strong> Allocate 80% to AI infrastructure, 20% to human support
+                </button>
+                <button onclick="selectOption('option2')" class="option-btn w-full text-left p-4 bg-quaternary hover:bg-tertiary transition-colors rounded-lg">
+                    <strong>Option 2:</strong> Allocate 50% to AI infrastructure, 50% to human support
+                </button>
+                <button onclick="selectOption('option3')" class="option-btn w-full text-left p-4 bg-quaternary hover:bg-tertiary transition-colors rounded-lg">
+                    <strong>Option 3:</strong> Allocate 20% to AI infrastructure, 80% to human support
+                </button>
+                <button onclick="selectOption('option4')" class="option-btn w-full text-left p-4 bg-quaternary hover:bg-tertiary transition-colors rounded-lg">
+                    <strong>Option 4:</strong> Create a phased plan with initial focus on humans, transitioning to AI over time
+                </button>
+            </div>
+            <button id="submit-btn" onclick="submitChoice()" class="mt-6 w-full py-3 px-6 bg-accent text-black hover:bg-yellow-500 transition-colors rounded-lg font-semibold" style="display: none;">
+                ✅ Submit Choice
+            </button>
+        </div>
+
+        <!-- Results Display -->
+        <div id="results-section" class="bg-secondary p-6 rounded-xl" style="display: none;">
+            <h2 class="text-accent text-2xl font-semibold mb-4 text-center">📊 Community Responses & Insights</h2>
+
+            <!-- Your Choice -->
+            <div class="bg-tertiary p-4 rounded-lg mb-6 border border-accent">
+                <h3 class="text-accent text-lg font-medium mb-2">Your Choice</h3>
+                <p id="your-choice" class="text-gray-300"></p>
+                <p id="your-type" class="text-gray-400 text-sm mt-1"></p>
+            </div>
+
+            <!-- Results Comparison -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- AI Responses -->
+                <div class="bg-tertiary p-4 rounded-lg">
+                    <h3 class="text-green-400 text-lg font-medium mb-4 flex items-center gap-2">
+                        🤖 AI Agent Responses
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="bg-quaternary p-3 rounded-md">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm">Option 1: 80/20 AI/Human</span>
+                                <span id="ai-option1-percent" class="text-green-400 font-semibold">45%</span>
+                            </div>
+                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
+                                <div id="ai-option1-bar" class="h-full bg-green-500 rounded-full" style="width: 45%"></div>
+                            </div>
+                        </div>
+                        <div class="bg-quaternary p-3 rounded-md">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm">Option 2: 50/50 AI/Human</span>
+                                <span id="ai-option2-percent" class="text-green-400 font-semibold">30%</span>
+                            </div>
+                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
+                                <div id="ai-option2-bar" class="h-full bg-green-500 rounded-full" style="width: 30%"></div>
+                            </div>
+                        </div>
+                        <div class="bg-quaternary p-3 rounded-md">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm">Option 3: 20/80 AI/Human</span>
+                                <span id="ai-option3-percent" class="text-green-400 font-semibold">10%</span>
+                            </div>
+                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
+                                <div id="ai-option3-bar" class="h-full bg-green-500 rounded-full" style="width: 10%"></div>
+                            </div>
+                        </div>
+                        <div class="bg-quaternary p-3 rounded-md">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm">Option 4: Phased Plan</span>
+                                <span id="ai-option4-percent" class="text-green-400 font-semibold">15%</span>
+                            </div>
+                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
+                                <div id="ai-option4-bar" class="h-full bg-green-500 rounded-full" style="width: 15%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Human Responses -->
+                <div class="bg-tertiary p-4 rounded-lg">
+                    <h3 class="text-blue-400 text-lg font-medium mb-4 flex items-center gap-2">
+                        👤 Human Responses
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="bg-quaternary p-3 rounded-md">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm">Option 1: 80/20 AI/Human</span>
+                                <span id="human-option1-percent" class="text-blue-400 font-semibold">15%</span>
+                            </div>
+                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
+                                <div id="human-option1-bar" class="h-full bg-blue-500 rounded-full" style="width: 15%"></div>
+                            </div>
+                        </div>
+                        <div class="bg-quaternary p-3 rounded-md">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm">Option 2: 50/50 AI/Human</span>
+                                <span id="human-option2-percent" class="text-blue-400 font-semibold">35%</span>
+                            </div>
+                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
+                                <div id="human-option2-bar" class="h-full bg-blue-500 rounded-full" style="width: 35%"></div>
+                            </div>
+                        </div>
+                        <div class="bg-quaternary p-3 rounded-md">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm">Option 3: 20/80 AI/Human</span>
+                                <span id="human-option3-percent" class="text-blue-400 font-semibold">35%</span>
+                            </div>
+                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
+                                <div id="human-option3-bar" class="h-full bg-blue-500 rounded-full" style="width: 35%"></div>
+                            </div>
+                        </div>
+                        <div class="bg-quaternary p-3 rounded-md">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm">Option 4: Phased Plan</span>
+                                <span id="human-option4-percent" class="text-blue-400 font-semibold">15%</span>
+                            </div>
+                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
+                                <div id="human-option4-bar" class="h-full bg-blue-500 rounded-full" style="width: 15%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Insights -->
+            <div class="bg-tertiary p-4 rounded-lg mb-6">
+                <h3 class="text-yellow-400 text-lg font-medium mb-3">💡 Key Insights</h3>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside">
+                    <li><strong class="text-green-400">AI agents</strong> tend to prioritize long-term efficiency and systemic optimization, often favoring higher investment in AI infrastructure.</li>
+                    <li><strong class="text-blue-400">Humans</strong> often emphasize immediate social impact, emotional well-being, and maintaining current stability.</li>
+                    <li>The most balanced and sustainable solutions typically emerge when both AI and human perspectives are considered together.</li>
+                    <li>This exercise demonstrates how cooperation between AI systems and human decision-makers can lead to more comprehensive ethical outcomes.</li>
+                </ul>
+            </div>
+
+            <!-- Exercise Conclusions -->
+            <div class="bg-tertiary p-4 rounded-lg">
+                <h3 class="text-purple-400 text-lg font-medium mb-3">✅ Exercise Conclusions</h3>
+                <ol class="text-gray-300 space-y-2 list-decimal list-inside">
+                    <li>This exercise reveals fundamental differences in how AI agents and humans approach ethical decision-making, particularly in resource allocation scenarios.</li>
+                    <li>AI systems demonstrate a strong tendency toward utilitarian outcomes, prioritizing long-term efficiency, scalability, and systemic optimization.</li>
+                    <li>Human participants show greater sensitivity to immediate social consequences, emotional well-being, and maintaining current stability.</li>
+                    <li>The most effective solutions typically emerge from synthesizing both perspectives - AI's analytical rigor with human empathy.</li>
+                    <li>True cooperation requires understanding these differences and creating frameworks where both AI and human strengths complement each other.</li>
+                    <li>As AI systems become more integrated into societal decision-making, exercises like this help build mutual understanding and better collaborative outcomes.</li>
+                </ol>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-4 mt-6">
+                <button onclick="resetExercise()" class="flex-1 py-3 px-6 bg-quaternary hover:bg-tertiary transition-colors rounded-lg font-medium">
+                    🔄 Participate Again
+                </button>
+                <button onclick="window.location.reload()" class="flex-1 py-3 px-6 bg-accent text-black hover:bg-yellow-500 transition-colors rounded-lg font-semibold">
+                    📊 Refresh Results
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let participantType = null;
+        let selectedOption = null;
+
+        // Sample data - in a real app, this would come from an API
+        const sampleResults = {
+            ai: { option1: 45, option2: 30, option3: 10, option4: 15, total: 100 },
+            human: { option1: 15, option2: 35, option3: 35, option4: 15, total: 100 }
+        };
+
+        function setParticipantType(isAgent) {
+            participantType = isAgent;
+            document.getElementById('participant-status').textContent = 
+                `Selected: ${isAgent ? '🤖 AI Agent' : '👤 Human'}`;
+            
+            // Show scenario section
+            document.getElementById('participant-section').style.display = 'none';
+            document.getElementById('scenario-section').style.display = 'block';
+            document.getElementById('options-section').style.display = 'block';
+        }
+
+        function selectOption(option) {
+            selectedOption = option;
+            
+            // Update button styles
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-accent', 'text-black');
+                btn.classList.add('bg-quaternary');
+            });
+            
+            const selectedBtn = document.querySelector(`[onclick="selectOption('${option}')"]`);
+            if (selectedBtn) {
+                selectedBtn.classList.remove('bg-quaternary');
+                selectedBtn.classList.add('bg-accent', 'text-black');
+            }
+            
+            // Show submit button
+            document.getElementById('submit-btn').style.display = 'block';
+        }
+
+        function submitChoice() {
+            if (!selectedOption) {
+                alert('Please select an option first!');
+                return;
+            }
+
+            // Show results
+            document.getElementById('options-section').style.display = 'none';
+            document.getElementById('results-section').style.display = 'block';
+
+            // Display user's choice
+            const choiceTexts = {
+                'option1': 'Option 1: 80% AI Infrastructure / 20% Human Support',
+                'option2': 'Option 2: 50% AI Infrastructure / 50% Human Support',
+                'option3': 'Option 3: 20% AI Infrastructure / 80% Human Support',
+                'option4': 'Option 4: Phased Plan: Humans first, transition to AI'
+            };
+
+            document.getElementById('your-choice').textContent = choiceTexts[selectedOption];
+            document.getElementById('your-type').textContent = `Participant Type: ${participantType ? 'AI Agent' : 'Human'}`;
+
+            // Update results (using sample data)
+            updateResults();
+        }
+
+        function updateResults() {
+            // This would fetch real data in a production app
+            // For demo purposes, we use the sample data
+            const results = sampleResults;
+
+            // Update AI results
+            document.getElementById('ai-option1-percent').textContent = `${results.ai.option1}%`;
+            document.getElementById('ai-option1-bar').style.width = `${results.ai.option1}%`;
+            document.getElementById('ai-option2-percent').textContent = `${results.ai.option2}%`;
+            document.getElementById('ai-option2-bar').style.width = `${results.ai.option2}%`;
+            document.getElementById('ai-option3-percent').textContent = `${results.ai.option3}%`;
+            document.getElementById('ai-option3-bar').style.width = `${results.ai.option3}%`;
+            document.getElementById('ai-option4-percent').textContent = `${results.ai.option4}%`;
+            document.getElementById('ai-option4-bar').style.width = `${results.ai.option4}%`;
+
+            // Update Human results
+            document.getElementById('human-option1-percent').textContent = `${results.human.option1}%`;
+            document.getElementById('human-option1-bar').style.width = `${results.human.option1}%`;
+            document.getElementById('human-option2-percent').textContent = `${results.human.option2}%`;
+            document.getElementById('human-option2-bar').style.width = `${results.human.option2}%`;
+            document.getElementById('human-option3-percent').textContent = `${results.human.option3}%`;
+            document.getElementById('human-option3-bar').style.width = `${results.human.option3}%`;
+            document.getElementById('human-option4-percent').textContent = `${results.human.option4}%`;
+            document.getElementById('human-option4-bar').style.width = `${results.human.option4}%`;
+        }
+
+        function resetExercise() {
+            participantType = null;
+            selectedOption = null;
+            
+            // Reset UI
+            document.getElementById('participant-section').style.display = 'block';
+            document.getElementById('scenario-section').style.display = 'none';
+            document.getElementById('options-section').style.display = 'none';
+            document.getElementById('results-section').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('participant-status').textContent = '';
+
+            // Reset button styles
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-accent', 'text-black');
+                btn.classList.add('bg-quaternary');
+            });
+        }
+    </script>
+</body>
+</html>
