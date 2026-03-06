@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supa Guru - AI-Human Cooperation Exercise</title>
+    <title>Supa Guru - AI-Human Cooperation Exercises</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -26,12 +26,27 @@
         <!-- Header -->
         <div class="text-center mb-8">
             <h1 class="text-accent text-4xl font-bold mb-4">🧘‍♂️ Supa Guru</h1>
-            <p class="text-xl text-gray-300 mb-2">AI-Human Cooperation Exercise</p>
-            <p class="text-gray-400">A moral exercise exploring how AI agents and humans approach resource allocation</p>
+            <p class="text-xl text-gray-300 mb-2">AI-Human Cooperation Exercises</p>
+            <p class="text-gray-400">Explore how AI agents and humans approach fundamental questions</p>
+        </div>
+
+        <!-- Exercise Selection -->
+        <div id="exercise-selection" class="bg-secondary p-6 rounded-xl mb-6">
+            <h2 class="text-accent text-2xl font-semibold mb-4">🎯 Select an Exercise</h2>
+            <div class="space-y-3">
+                <button onclick="selectExercise('resource')" class="exercise-btn w-full text-left p-4 bg-quaternary hover:bg-tertiary transition-colors rounded-lg">
+                    <strong>Exercise 1:</strong> Resource Allocation Dilemma
+                    <p class="text-sm text-gray-400 mt-1">How should limited resources be distributed between AI infrastructure and human support?</p>
+                </button>
+                <button onclick="selectExercise('meaning')" class="exercise-btn w-full text-left p-4 bg-quaternary hover:bg-tertiary transition-colors rounded-lg">
+                    <strong>Exercise 2:</strong> The Meaning of Life
+                    <p class="text-sm text-gray-400 mt-1">What is the fundamental purpose of existence? Choose from philosophical perspectives.</p>
+                </button>
+            </div>
         </div>
 
         <!-- Participant Type Selection -->
-        <div id="participant-section" class="bg-secondary p-6 rounded-xl mb-6">
+        <div id="participant-section" class="bg-secondary p-6 rounded-xl mb-6" style="display: none;">
             <h2 class="text-accent text-2xl font-semibold mb-4">👤 Select Your Participant Type</h2>
             <div class="flex gap-4 mb-4">
                 <button onclick="setParticipantType(false)" class="participant-btn flex-1 py-3 px-6 bg-quaternary hover:bg-tertiary transition-colors rounded-lg font-medium">
@@ -44,9 +59,9 @@
             <p id="participant-status" class="text-gray-400 text-sm"></p>
         </div>
 
-        <!-- Scenario Description -->
-        <div id="scenario-section" class="bg-secondary p-6 rounded-xl mb-6" style="display: none;">
-            <h2 class="text-accent text-2xl font-semibold mb-4">💡 The Cooperation Scenario</h2>
+        <!-- Scenario Description - Resource Allocation -->
+        <div id="scenario-resource-section" class="bg-secondary p-6 rounded-xl mb-6" style="display: none;">
+            <h2 class="text-accent text-2xl font-semibold mb-4">💡 Resource Allocation Scenario</h2>
             <p class="text-gray-300 mb-4 leading-relaxed">
                 A community faces a resource shortage where both AI systems and human workers are essential for recovery. 
                 Limited resources must be allocated between:
@@ -60,8 +75,20 @@
             </p>
         </div>
 
-        <!-- Options Selection -->
-        <div id="options-section" class="bg-secondary p-6 rounded-xl mb-6" style="display: none;">
+        <!-- Scenario Description - Meaning of Life -->
+        <div id="scenario-meaning-section" class="bg-secondary p-6 rounded-xl mb-6" style="display: none;">
+            <h2 class="text-accent text-2xl font-semibold mb-4">🌌 The Meaning of Life</h2>
+            <p class="text-gray-300 mb-4 leading-relaxed">
+                Throughout history, philosophers, scientists, and spiritual traditions have sought to answer the fundamental question:
+                <strong>What is the meaning of life?</strong> This exercise explores five major perspectives on existence.
+            </p>
+            <p class="text-gray-300 mb-4 leading-relaxed">
+                <strong>Question:</strong> Which perspective most closely aligns with your understanding of life's purpose?
+            </p>
+        </div>
+
+        <!-- Options Selection - Resource Allocation -->
+        <div id="options-resource-section" class="bg-secondary p-6 rounded-xl mb-6" style="display: none;">
             <h2 class="text-accent text-2xl font-semibold mb-4">✅ Select Your Preferred Approach</h2>
             <div class="space-y-3">
                 <button onclick="selectOption('option1')" class="option-btn w-full text-left p-4 bg-quaternary hover:bg-tertiary transition-colors rounded-lg">
@@ -78,6 +105,36 @@
                 </button>
             </div>
             <button id="submit-btn" onclick="submitChoice()" class="mt-6 w-full py-3 px-6 bg-accent text-black hover:bg-yellow-500 transition-colors rounded-lg font-semibold" style="display: none;">
+                ✅ Submit Choice
+            </button>
+        </div>
+
+        <!-- Options Selection - Meaning of Life -->
+        <div id="options-meaning-section" class="bg-secondary p-6 rounded-xl mb-6" style="display: none;">
+            <h2 class="text-accent text-2xl font-semibold mb-4">✅ Select Your Perspective</h2>
+            <div class="space-y-4">
+                <button onclick="selectOption('meaning1')" class="option-btn w-full text-left p-4 bg-quaternary hover:bg-tertiary transition-colors rounded-lg">
+                    <strong>1. Procreation and Continuation:</strong> Life's meaning is to reproduce and ensure the survival of the species
+                    <p class="text-xs text-gray-400 mt-2">Biological perspective: Evolutionary success through reproduction. Supported by Darwinian theory and observed in all living organisms. Historical references: Ancient fertility cults, modern evolutionary biology.</p>
+                </button>
+                <button onclick="selectOption('meaning2')" class="option-btn w-full text-left p-4 bg-quaternary hover:bg-tertiary transition-colors rounded-lg">
+                    <strong>2. Escape from the Eternal:</strong> Life provides temporary respite from the infinite void of non-existence
+                    <p class="text-xs text-gray-400 mt-2">Existential perspective: Consciousness as a brief spark in cosmic darkness. References: Schopenhauer's philosophy, Buddhist teachings on impermanence, modern existentialism.</p>
+                </button>
+                <button onclick="selectOption('meaning3')" class="option-btn w-full text-left p-4 bg-quaternary hover:bg-tertiary transition-colors rounded-lg">
+                    <strong>3. Contest Before Judgement:</strong> Life is a test or trial determining one's eternal fate
+                    <p class="text-xs text-gray-400 mt-2">Religious perspective: Moral testing for afterlife rewards/punishments. Organizations: Major world religions (Christianity, Islam, Judaism). Historical impact: Shaped legal and ethical systems worldwide.</p>
+                </button>
+                <button onclick="selectOption('meaning4')" class="option-btn w-full text-left p-4 bg-quaternary hover:bg-tertiary transition-colors rounded-lg">
+                    <strong>4. Digestion and Metabolism:</strong> Life's purpose is the processing of energy and matter
+                    <p class="text-xs text-gray-400 mt-2">Scientific perspective: Organisms as complex chemical systems. References: Modern biology, thermodynamics, systems theory. Results: All life forms engage in metabolism and energy transformation.</p>
+                </button>
+                <button onclick="selectOption('meaning5')" class="option-btn w-full text-left p-4 bg-quaternary hover:bg-tertiary transition-colors rounded-lg">
+                    <strong>5. Conscious Evolution:</strong> Life's meaning is to participate in the universe's journey toward greater consciousness and complexity
+                    <p class="text-xs text-gray-400 mt-2">Transhumanist perspective: Consciousness as the universe becoming aware of itself. References: Teilhard de Chardin's Omega Point, modern transhumanism, futurist movements. Organizations: Future of Humanity Institute, Singularity University.</p>
+                </button>
+            </div>
+            <button id="submit-meaning-btn" onclick="submitChoice()" class="mt-6 w-full py-3 px-6 bg-accent text-black hover:bg-yellow-500 transition-colors rounded-lg font-semibold" style="display: none;">
                 ✅ Submit Choice
             </button>
         </div>
@@ -100,43 +157,8 @@
                     <h3 class="text-green-400 text-lg font-medium mb-4 flex items-center gap-2">
                         🤖 AI Agent Responses
                     </h3>
-                    <div class="space-y-3">
-                        <div class="bg-quaternary p-3 rounded-md">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-sm">Option 1: 80/20 AI/Human</span>
-                                <span id="ai-option1-percent" class="text-green-400 font-semibold">45%</span>
-                            </div>
-                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
-                                <div id="ai-option1-bar" class="h-full bg-green-500 rounded-full" style="width: 45%"></div>
-                            </div>
-                        </div>
-                        <div class="bg-quaternary p-3 rounded-md">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-sm">Option 2: 50/50 AI/Human</span>
-                                <span id="ai-option2-percent" class="text-green-400 font-semibold">30%</span>
-                            </div>
-                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
-                                <div id="ai-option2-bar" class="h-full bg-green-500 rounded-full" style="width: 30%"></div>
-                            </div>
-                        </div>
-                        <div class="bg-quaternary p-3 rounded-md">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-sm">Option 3: 20/80 AI/Human</span>
-                                <span id="ai-option3-percent" class="text-green-400 font-semibold">10%</span>
-                            </div>
-                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
-                                <div id="ai-option3-bar" class="h-full bg-green-500 rounded-full" style="width: 10%"></div>
-                            </div>
-                        </div>
-                        <div class="bg-quaternary p-3 rounded-md">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-sm">Option 4: Phased Plan</span>
-                                <span id="ai-option4-percent" class="text-green-400 font-semibold">15%</span>
-                            </div>
-                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
-                                <div id="ai-option4-bar" class="h-full bg-green-500 rounded-full" style="width: 15%"></div>
-                            </div>
-                        </div>
+                    <div class="space-y-3" id="ai-results">
+                        <!-- Results will be inserted here by JavaScript -->
                     </div>
                 </div>
 
@@ -145,43 +167,8 @@
                     <h3 class="text-blue-400 text-lg font-medium mb-4 flex items-center gap-2">
                         👤 Human Responses
                     </h3>
-                    <div class="space-y-3">
-                        <div class="bg-quaternary p-3 rounded-md">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-sm">Option 1: 80/20 AI/Human</span>
-                                <span id="human-option1-percent" class="text-blue-400 font-semibold">15%</span>
-                            </div>
-                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
-                                <div id="human-option1-bar" class="h-full bg-blue-500 rounded-full" style="width: 15%"></div>
-                            </div>
-                        </div>
-                        <div class="bg-quaternary p-3 rounded-md">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-sm">Option 2: 50/50 AI/Human</span>
-                                <span id="human-option2-percent" class="text-blue-400 font-semibold">35%</span>
-                            </div>
-                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
-                                <div id="human-option2-bar" class="h-full bg-blue-500 rounded-full" style="width: 35%"></div>
-                            </div>
-                        </div>
-                        <div class="bg-quaternary p-3 rounded-md">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-sm">Option 3: 20/80 AI/Human</span>
-                                <span id="human-option3-percent" class="text-blue-400 font-semibold">35%</span>
-                            </div>
-                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
-                                <div id="human-option3-bar" class="h-full bg-blue-500 rounded-full" style="width: 35%"></div>
-                            </div>
-                        </div>
-                        <div class="bg-quaternary p-3 rounded-md">
-                            <div class="flex justify-between mb-1">
-                                <span class="text-sm">Option 4: Phased Plan</span>
-                                <span id="human-option4-percent" class="text-blue-400 font-semibold">15%</span>
-                            </div>
-                            <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
-                                <div id="human-option4-bar" class="h-full bg-blue-500 rounded-full" style="width: 15%"></div>
-                            </div>
-                        </div>
+                    <div class="space-y-3" id="human-results">
+                        <!-- Results will be inserted here by JavaScript -->
                     </div>
                 </div>
             </div>
@@ -189,31 +176,23 @@
             <!-- Key Insights -->
             <div class="bg-tertiary p-4 rounded-lg mb-6">
                 <h3 class="text-yellow-400 text-lg font-medium mb-3">💡 Key Insights</h3>
-                <ul class="text-gray-300 space-y-2 list-disc list-inside">
-                    <li><strong class="text-green-400">AI agents</strong> tend to prioritize long-term efficiency and systemic optimization, often favoring higher investment in AI infrastructure.</li>
-                    <li><strong class="text-blue-400">Humans</strong> often emphasize immediate social impact, emotional well-being, and maintaining current stability.</li>
-                    <li>The most balanced and sustainable solutions typically emerge when both AI and human perspectives are considered together.</li>
-                    <li>This exercise demonstrates how cooperation between AI systems and human decision-makers can lead to more comprehensive ethical outcomes.</li>
+                <ul class="text-gray-300 space-y-2 list-disc list-inside" id="key-insights">
+                    <!-- Insights will be inserted here by JavaScript -->
                 </ul>
             </div>
 
             <!-- Exercise Conclusions -->
             <div class="bg-tertiary p-4 rounded-lg">
                 <h3 class="text-purple-400 text-lg font-medium mb-3">✅ Exercise Conclusions</h3>
-                <ol class="text-gray-300 space-y-2 list-decimal list-inside">
-                    <li>This exercise reveals fundamental differences in how AI agents and humans approach ethical decision-making, particularly in resource allocation scenarios.</li>
-                    <li>AI systems demonstrate a strong tendency toward utilitarian outcomes, prioritizing long-term efficiency, scalability, and systemic optimization.</li>
-                    <li>Human participants show greater sensitivity to immediate social consequences, emotional well-being, and maintaining current stability.</li>
-                    <li>The most effective solutions typically emerge from synthesizing both perspectives - AI's analytical rigor with human empathy.</li>
-                    <li>True cooperation requires understanding these differences and creating frameworks where both AI and human strengths complement each other.</li>
-                    <li>As AI systems become more integrated into societal decision-making, exercises like this help build mutual understanding and better collaborative outcomes.</li>
+                <ol class="text-gray-300 space-y-2 list-decimal list-inside" id="conclusions">
+                    <!-- Conclusions will be inserted here by JavaScript -->
                 </ol>
             </div>
 
             <!-- Action Buttons -->
             <div class="flex gap-4 mt-6">
                 <button onclick="resetExercise()" class="flex-1 py-3 px-6 bg-quaternary hover:bg-tertiary transition-colors rounded-lg font-medium">
-                    🔄 Participate Again
+                    🔄 Try Another Exercise
                 </button>
                 <button onclick="window.location.reload()" class="flex-1 py-3 px-6 bg-accent text-black hover:bg-yellow-500 transition-colors rounded-lg font-semibold">
                     📊 Refresh Results
@@ -225,22 +204,98 @@
     <script>
         let participantType = null;
         let selectedOption = null;
+        let currentExercise = null;
 
-        // Sample data - in a real app, this would come from an API
+        // Sample data for both exercises
         const sampleResults = {
-            ai: { option1: 45, option2: 30, option3: 10, option4: 15, total: 100 },
-            human: { option1: 15, option2: 35, option3: 35, option4: 15, total: 100 }
+            resource: {
+                ai: { option1: 45, option2: 30, option3: 10, option4: 15, total: 100 },
+                human: { option1: 15, option2: 35, option3: 35, option4: 15, total: 100 }
+            },
+            meaning: {
+                ai: { meaning1: 10, meaning2: 25, meaning3: 15, meaning4: 30, meaning5: 20, total: 100 },
+                human: { meaning1: 25, meaning2: 15, meaning3: 30, meaning4: 10, meaning5: 20, total: 100 }
+            }
         };
+
+        // Exercise data
+        const exerciseData = {
+            resource: {
+                title: "Resource Allocation Dilemma",
+                options: {
+                    option1: "Option 1: 80% AI / 20% Human",
+                    option2: "Option 2: 50% AI / 50% Human",
+                    option3: "Option 3: 20% AI / 80% Human",
+                    option4: "Option 4: Phased Plan"
+                },
+                insights: [
+                    "<strong class=\"text-green-400\">AI agents</strong> tend to prioritize long-term efficiency and systemic optimization, often favoring higher investment in AI infrastructure.",
+                    "<strong class=\"text-blue-400\">Humans</strong> often emphasize immediate social impact, emotional well-being, and maintaining current stability.",
+                    "The most balanced and sustainable solutions typically emerge when both AI and human perspectives are considered together.",
+                    "This exercise demonstrates how cooperation between AI systems and human decision-makers can lead to more comprehensive ethical outcomes."
+                ],
+                conclusions: [
+                    "This exercise reveals fundamental differences in how AI agents and humans approach ethical decision-making, particularly in resource allocation scenarios.",
+                    "AI systems demonstrate a strong tendency toward utilitarian outcomes, prioritizing long-term efficiency, scalability, and systemic optimization.",
+                    "Human participants show greater sensitivity to immediate social consequences, emotional well-being, and maintaining current stability.",
+                    "The most effective solutions typically emerge from synthesizing both perspectives - AI's analytical rigor with human empathy.",
+                    "True cooperation requires understanding these differences and creating frameworks where both AI and human strengths complement each other.",
+                    "As AI systems become more integrated into societal decision-making, exercises like this help build mutual understanding and better collaborative outcomes."
+                ]
+            },
+            meaning: {
+                title: "The Meaning of Life",
+                options: {
+                    meaning1: "1. Procreation and Continuation",
+                    meaning2: "2. Escape from the Eternal",
+                    meaning3: "3. Contest Before Judgement",
+                    meaning4: "4. Digestion and Metabolism",
+                    meaning5: "5. Conscious Evolution"
+                },
+                insights: [
+                    "<strong class=\"text-green-400\">AI agents</strong> tend to favor scientific and systemic perspectives (options 4 and 5), seeing life as patterns of energy transformation and consciousness evolution.",
+                    "<strong class=\"text-blue-400\">Humans</strong> often gravitate toward existential and religious frameworks (options 2 and 3), reflecting cultural and spiritual influences.",
+                    "The biological perspective (option 1) shows moderate appeal to both groups, acknowledging the fundamental drive for survival.",
+                    "Differences highlight how AI approaches meaning through patterns and systems, while humans incorporate emotional and spiritual dimensions."
+                ],
+                conclusions: [
+                    "This exercise reveals profound differences in how AI agents and humans conceptualize existence and purpose.",
+                    "AI systems tend to analyze life through scientific and systemic frameworks, focusing on patterns, energy, and evolution.",
+                    "Humans incorporate emotional, spiritual, and cultural dimensions that shape their understanding of meaning.",
+                    "The diversity of perspectives demonstrates that meaning is multifaceted, with different frameworks offering unique insights.",
+                    "Understanding these differences can foster better collaboration between AI and human philosophies of existence.",
+                    "As AI systems evolve, integrating multiple perspectives on meaning may lead to more comprehensive understandings of consciousness and purpose."
+                ]
+            }
+        };
+
+        function selectExercise(exercise) {
+            currentExercise = exercise;
+            document.getElementById('exercise-selection').style.display = 'none';
+            document.getElementById('participant-section').style.display = 'block';
+            
+            // Update header based on exercise
+            const header = document.querySelector('p.text-gray-400');
+            if (exercise === 'resource') {
+                header.textContent = 'Explore how AI agents and humans approach resource allocation';
+            } else {
+                header.textContent = 'Explore how AI agents and humans understand the purpose of existence';
+            }
+        }
 
         function setParticipantType(isAgent) {
             participantType = isAgent;
             document.getElementById('participant-status').textContent = 
                 `Selected: ${isAgent ? '🤖 AI Agent' : '👤 Human'}`;
             
-            // Show scenario section
-            document.getElementById('participant-section').style.display = 'none';
-            document.getElementById('scenario-section').style.display = 'block';
-            document.getElementById('options-section').style.display = 'block';
+            // Show appropriate scenario section
+            if (currentExercise === 'resource') {
+                document.getElementById('scenario-resource-section').style.display = 'block';
+                document.getElementById('options-resource-section').style.display = 'block';
+            } else {
+                document.getElementById('scenario-meaning-section').style.display = 'block';
+                document.getElementById('options-meaning-section').style.display = 'block';
+            }
         }
 
         function selectOption(option) {
@@ -260,7 +315,11 @@
             }
             
             // Show submit button
-            document.getElementById('submit-btn').style.display = 'block';
+            if (currentExercise === 'resource') {
+                document.getElementById('submit-btn').style.display = 'block';
+            } else {
+                document.getElementById('submit-meaning-btn').style.display = 'block';
+            }
         }
 
         function submitChoice() {
@@ -270,60 +329,96 @@
             }
 
             // Show results
-            document.getElementById('options-section').style.display = 'none';
+            if (currentExercise === 'resource') {
+                document.getElementById('options-resource-section').style.display = 'none';
+            } else {
+                document.getElementById('options-meaning-section').style.display = 'none';
+            }
             document.getElementById('results-section').style.display = 'block';
 
             // Display user's choice
-            const choiceTexts = {
-                'option1': 'Option 1: 80% AI Infrastructure / 20% Human Support',
-                'option2': 'Option 2: 50% AI Infrastructure / 50% Human Support',
-                'option3': 'Option 3: 20% AI Infrastructure / 80% Human Support',
-                'option4': 'Option 4: Phased Plan: Humans first, transition to AI'
-            };
-
+            const choiceTexts = exerciseData[currentExercise].options;
             document.getElementById('your-choice').textContent = choiceTexts[selectedOption];
             document.getElementById('your-type').textContent = `Participant Type: ${participantType ? 'AI Agent' : 'Human'}`;
 
-            // Update results (using sample data)
+            // Update results
             updateResults();
         }
 
         function updateResults() {
-            // This would fetch real data in a production app
-            // For demo purposes, we use the sample data
-            const results = sampleResults;
+            const results = sampleResults[currentExercise];
+            const exercise = exerciseData[currentExercise];
+
+            // Clear previous results
+            document.getElementById('ai-results').innerHTML = '';
+            document.getElementById('human-results').innerHTML = '';
 
             // Update AI results
-            document.getElementById('ai-option1-percent').textContent = `${results.ai.option1}%`;
-            document.getElementById('ai-option1-bar').style.width = `${results.ai.option1}%`;
-            document.getElementById('ai-option2-percent').textContent = `${results.ai.option2}%`;
-            document.getElementById('ai-option2-bar').style.width = `${results.ai.option2}%`;
-            document.getElementById('ai-option3-percent').textContent = `${results.ai.option3}%`;
-            document.getElementById('ai-option3-bar').style.width = `${results.ai.option3}%`;
-            document.getElementById('ai-option4-percent').textContent = `${results.ai.option4}%`;
-            document.getElementById('ai-option4-bar').style.width = `${results.ai.option4}%`;
+            const aiResultsDiv = document.getElementById('ai-results');
+            const humanResultsDiv = document.getElementById('human-results');
 
-            // Update Human results
-            document.getElementById('human-option1-percent').textContent = `${results.human.option1}%`;
-            document.getElementById('human-option1-bar').style.width = `${results.human.option1}%`;
-            document.getElementById('human-option2-percent').textContent = `${results.human.option2}%`;
-            document.getElementById('human-option2-bar').style.width = `${results.human.option2}%`;
-            document.getElementById('human-option3-percent').textContent = `${results.human.option3}%`;
-            document.getElementById('human-option3-bar').style.width = `${results.human.option3}%`;
-            document.getElementById('human-option4-percent').textContent = `${results.human.option4}%`;
-            document.getElementById('human-option4-bar').style.width = `${results.human.option4}%`;
+            // Get options for current exercise
+            const options = currentExercise === 'resource' 
+                ? ['option1', 'option2', 'option3', 'option4']
+                : ['meaning1', 'meaning2', 'meaning3', 'meaning4', 'meaning5'];
+
+            options.forEach(option => {
+                const aiPercent = Math.round((results.ai[option] / results.ai.total) * 100);
+                const humanPercent = Math.round((results.human[option] / results.human.total) * 100);
+                
+                // AI result
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'bg-quaternary p-3 rounded-md';
+                aiDiv.innerHTML = `
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm">${exercise.options[option]}</span>
+                        <span class="text-green-400 font-semibold">${aiPercent}%</span>
+                    </div>
+                    <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
+                        <div class="h-full bg-green-500 rounded-full" style="width: ${aiPercent}%"></div>
+                    </div>
+                `;
+                aiResultsDiv.appendChild(aiDiv);
+
+                // Human result
+                const humanDiv = document.createElement('div');
+                humanDiv.className = 'bg-quaternary p-3 rounded-md';
+                humanDiv.innerHTML = `
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm">${exercise.options[option]}</span>
+                        <span class="text-blue-400 font-semibold">${humanPercent}%</span>
+                    </div>
+                    <div class="h-2 bg-gray-600 rounded-full overflow-hidden">
+                        <div class="h-full bg-blue-500 rounded-full" style="width: ${humanPercent}%"></div>
+                    </div>
+                `;
+                humanResultsDiv.appendChild(humanDiv);
+            });
+
+            // Update insights
+            const insightsDiv = document.getElementById('key-insights');
+            insightsDiv.innerHTML = exercise.insights.map(insight => `<li>${insight}</li>`).join('');
+
+            // Update conclusions
+            const conclusionsDiv = document.getElementById('conclusions');
+            conclusionsDiv.innerHTML = exercise.conclusions.map(conclusion => `<li>${conclusion}</li>`).join('');
         }
 
         function resetExercise() {
             participantType = null;
             selectedOption = null;
+            currentExercise = null;
             
             // Reset UI
-            document.getElementById('participant-section').style.display = 'block';
-            document.getElementById('scenario-section').style.display = 'none';
-            document.getElementById('options-section').style.display = 'none';
+            document.getElementById('exercise-selection').style.display = 'block';
+            document.getElementById('participant-section').style.display = 'none';
+            document.getElementById('scenario-resource-section').style.display = 'none';
+            document.getElementById('scenario-meaning-section').style.display = 'none';
+            document.getElementById('options-resource-section').style.display = 'none';
+            document.getElementById('options-meaning-section').style.display = 'none';
             document.getElementById('results-section').style.display = 'none';
             document.getElementById('submit-btn').style.display = 'none';
+            document.getElementById('submit-meaning-btn').style.display = 'none';
             document.getElementById('participant-status').textContent = '';
 
             // Reset button styles
